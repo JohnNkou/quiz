@@ -2,8 +2,8 @@
 
 import { useState,createRef, useEffect } from 'react'
 import Question from '@/components/Question.jsx'
-import { build_question_name, build_question_assertion_name, build_question_assertion_check_name ,put_red_border, remove_red_border } from 'utils.js'
-import { AddQuiz, AddAssertion, CloseCircle, CloseRectangle, QuizResume, Save } from 'Svg.jsx'
+import { build_question_name, build_question_assertion_name, build_question_assertion_check_name ,put_red_border, remove_red_border } from '../utils.js'
+import { AddQuiz, AddAssertion, CloseCircle, CloseRectangle, QuizResume, Save } from '../Svg.jsx'
 
 let id = 0,
 formRef = createRef();

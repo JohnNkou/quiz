@@ -1,4 +1,4 @@
-import { QName, Current } from 'constant.js'
+import { QName, Current } from './constant.js'
 
 export function build_question_name(question_number){
 	return `q-${question_number}`;

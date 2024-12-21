@@ -1,7 +1,7 @@
 import { useState, useEffect, createRef } from 'react';
-import { build_question_name, build_question_assertion_name, build_question_assertion_check_name } from 'utils.js'
-import { AddQuiz, AddAssertion, CloseCircle, CloseRectangle, QuizResume, Save } from 'Svg.jsx'
-import { SIZE } from 'constant.js'
+import { build_question_name, build_question_assertion_name, build_question_assertion_check_name } from '../utils.js'
+import { AddQuiz, AddAssertion, CloseCircle, CloseRectangle, QuizResume, Save } from '../Svg.jsx'
+import { SIZE } from '../constant.js'
 
 export default function Question(props){
 	let [assertions, setAssertions] = useState(props.assertions),

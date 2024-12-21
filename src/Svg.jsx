@@ -1,4 +1,4 @@
-import { SIZE } from 'constant.js'
+import { SIZE } from './constant.js'
 
 export function AddQuiz({ size=SIZE.NORMAL, data={}, color }){
 	let filColor = color || "#212121";
