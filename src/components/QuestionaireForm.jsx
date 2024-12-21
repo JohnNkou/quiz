@@ -10,7 +10,8 @@ formRef = createRef();
 
 export default function QuestionaireForm(props){
 	let [questions, setQuestions] = useState([]),
-	[title,setTitle] = useState(props.title || '');
+	[title,setTitle] = useState(props.title || ''),
+	[errors, setErrors] = useState({});
 
 	useEffect(()=>{
 		if(props.questions){
@@ -59,7 +60,8 @@ export default function QuestionaireForm(props){
 	function enregister(event){
 		event.preventDefault();
 
-		let form = formRef.current;
+		let form = formRef.current,
+		errors = {};
 
 		if(form){
 			let newQuestions = [],
@@ -81,7 +83,9 @@ export default function QuestionaireForm(props){
 						if(!titleValue){
 							put_red_border(titleNode);
 							titleNode.focus();
-							return console.error("Question number",i+1,"has nothing");
+
+							errors[i] = "Veuillez entrer la question dans le champs prévu";
+							continue;
 						}
 						else{
 							remove_red_border(titleNode);
@@ -92,7 +96,8 @@ export default function QuestionaireForm(props){
 
 						if(!checks){
 							put_red_border(titleNode);
-							return console.error("No assertion provided for question",i);
+							errors[i] = "Veuillez entrer au moins deux assertion pour cette question";
+							continue;
 						}
 
 						if(checks.length){
@@ -123,15 +128,18 @@ export default function QuestionaireForm(props){
 								put_red_border(titleNode);
 								checks[0].focus();
 
-								return console.error("No assertion has been checked");
+								errors[i] = "Veuillez valider une assertion pour cette question";
+								continue;
 							}
 						}
 						else{
-							return console.error("No checks found for questions",i+1)
+							errors[i] = "Aucune validation d'assertion trouvé";
+							continue;
 						}
 
 						if(!assertions.length){
-							return console.error("No checked assertion provided for question",i);
+							errors[i] = "Aucune assertion trouvé";
+							continue;
 						}
 
 						newQuestions.push({
@@ -141,6 +149,12 @@ export default function QuestionaireForm(props){
 
 						
 					}
+				}
+
+				setErrors(errors);
+
+				if(Object.keys(errors).length){
+					return;
 				}
 
 				console.log("NewQuestion is",{
@@ -201,7 +215,7 @@ export default function QuestionaireForm(props){
 					<span></span> 
 				</div>
 				<div onClick={removeQuestion} className='mt-10'>
-					{questions.map((question,number)=> <Question key={question.id} {...question} number={number} />)}
+					{questions.map((question,number)=> <Question errorMessage={errors[number]} key={question.id} {...question} number={number} />)}
 				</div>
 			</div>
 		</form>

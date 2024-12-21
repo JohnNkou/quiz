@@ -1,6 +1,7 @@
 import { useState, useEffect, createRef } from 'react';
 import { build_question_name, build_question_assertion_name, build_question_assertion_check_name } from '../utils.js'
 import { AddQuiz, AddAssertion, CloseCircle, CloseRectangle, QuizResume, Save } from '../Svg.jsx'
+import ErrorMessage from './ErrorMessage.jsx'
 import { SIZE } from '../constant.js'
 
 export default function Question(props){
@@ -102,7 +103,10 @@ export default function Question(props){
 				{/*<button onClick={addAssertion} className='text-sm ms-3 bg-zinc-500 text-white px-2'>Ajouter assertion</button>*/}
 			</div>
 		</div>
-		<div className='' ref={myRef} onClick={removeAssertion}>
+		<div className='relative w-full' ref={myRef} onClick={removeAssertion}>
+			{props.errorMessage? <div className='absolute w-3/4 z-10 right-full me-2'>
+				<ErrorMessage message={props.errorMessage} />
+			</div> : null}
 			<div className='bg-white'>
 				<h1 className='font-bold'>Assertions</h1>
 				{assertions.map(({ text, checked,id, focus },key)=>{
@@ -116,7 +120,7 @@ export default function Question(props){
 						<div className='absolute left-full grid grid-cols-2 w-10 place-items-center top-0'>
 							<input type='checkbox' defaultChecked={checked} data-check='true' data-c-id={key} name={assertionCheckName} />
 							{assertions.length > 2? <>
-							<button data-q-id={key} className='text-sm px-2 text-white align-bottom me-2'><CloseRectangle size={SIZE.TINY} color='rgb(255, 78, 78)' data={{'data-q-id':key}} /></button>
+							<button data-q-id={key} className='text-sm ms-2 text-white align-bottom me-2'><CloseRectangle size={SIZE.TINY} color='rgb(255, 78, 78)' data={{'data-q-id':key}} /></button>
 							</> : null }
 						</div>
 				</div>
