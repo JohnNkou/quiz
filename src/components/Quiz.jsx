@@ -82,12 +82,14 @@ export default function Quiz(props){
 		setChoiceAvailable(number);
 	}
 
-	return <div className='shadow w-full sm:w-3/4 md:w-2/3 lg:w-1/3 bg-white text-center inline-block pb-10'>
-		{showResult? <Resultat myAssertion={myAssertion} questions={questions} onClose={goBack} totalResponse={totalResponse} /> : 
+	return <div className='shadow w-full bg-white text-center inline-block pb-10'>
+		{showResult? <Resultat onResultat={props.onResultat} myAssertion={myAssertion} questions={questions} onClose={goBack} totalResponse={totalResponse} /> : 
 		<div className='relative'>
 			<div className='p-5'>
-				<div className=''>
-					<h1 className='text-2xl font-bold relative '><button onClick={goBack} className='absolute text-sm mt-2 left-0'>Back</button>{title}</h1>
+				<div className='row grid grid-cols-3'>
+					<button onClick={goBack} className='text-start font-bold'>Fermer</button>
+					<h1 className='text-2xl font-bold relative '>{title}</h1>
+					<p className='text-end'>{`${(cursor + 1)}/${questions.length}`}</p>
 				</div>
 			</div>
 			<InteractiveQuiz allowResult={true} cursor={cursor} questions={questions} onShowResult={()=> setShowResult(true)} onAssertionUpdated={updateAssertion} onNavigation={navigate} totalResponse={totalResponse} userTotalResponse={userTotalResponse} userAssertions={myAssertion} />
@@ -98,7 +100,7 @@ export default function Quiz(props){
 	
 }
 
-function Resultat({ myAssertion, questions, totalResponse, onClose }){
+function Resultat({ myAssertion, questions, totalResponse, onClose, onResultat }){
 	let [percentage, setPercentage] = useState(''),
 	[correctAnswers, setCorrectAnswers] = useState(0),
 	[cursor, setCursor] = useState(0),
@@ -129,9 +131,13 @@ function Resultat({ myAssertion, questions, totalResponse, onClose }){
 			report[index] = currentReport;
 		})
 
-		percentage = Math.floor((myPoint / totalResponse) * 100) + "%";
+		percentage = Math.floor((myPoint / totalResponse) * 100);
 
-		setPercentage(percentage);
+		if(onResultat){
+			onResultat(percentage)
+		}
+
+		setPercentage(percentage + "%");
 		setCorrectAnswers(myPoint);
 		setReport(report);
 	},[true]);
@@ -243,7 +249,7 @@ function InteractiveQuiz({ cursor, report, questions, onShowResult,  onAssertion
 			}
 
 			if(onNavigation){
-				onNavigation(newCursor);
+				onNavigation(Number(newCursor));
 			}
 		}
 	}
@@ -251,6 +257,8 @@ function InteractiveQuiz({ cursor, report, questions, onShowResult,  onAssertion
 	function updateChoice(number){
 		setChoiceAvailable(number);
 	}
+
+	console.log("question",questions);
 
 	return <div style={{minHeight:'500px'}} className='relative h-full px-4'>
 		<div className='mt-3'>
@@ -292,31 +300,9 @@ function InteractiveQuiz({ cursor, report, questions, onShowResult,  onAssertion
 				<button onClick={onShowResult} className='bg-indigo-900 text-white p-2 rounded'>Terminer</button>
 			</div> : null}
 
-		<div className='absolute bottom-2 w-full' onClick={navigate}>
-			{questions.map((question,index)=>{
-				let number = index + 1,
-				className = 'py-1 px-3 rounded-xl me-2 shadow';
-
-				if(report){
-					if(report[index].success){
-						className += ' bg-green-500 text-white';
-					}
-					else{
-						className += ' bg-red-500';
-					}
-				}
-				else if(index == cursor){
-					className += ' bg-indigo-500 text-white'
-				}
-				else if(visited.indexOf(index) != -1){
-					className += ' bg-zinc-400 text-white';
-				}
-				else{
-					className += ' text-black'
-				}
-				return <span key={index} className={className} data-cursor={index}>{number}</span>
-			})}
-		</div>
+		{(!report)? <div className='absolute bottom-2 w-full' onClick={navigate}>
+			<button style={{width:'100px'}} className={`${(cursor > 0)? 'bg-primary shadow border p-2 me-2 rounded': 'invisible'}`} data-cursor={cursor -1 }>Precedent</button><button style={{width:'100px'}} className={`${((cursor + 1) < questions.length )? 'bg-primary border shadow p-2 rounded' : 'invisible'}`} data-cursor={cursor + 1}>Suivant</button>
+		</div> : null}
 	</div>
 }
 

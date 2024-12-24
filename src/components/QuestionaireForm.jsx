@@ -23,9 +23,10 @@ export default function QuestionaireForm(props){
 					return question;
 				})
 
-				console.log('KAKA',questions);
-
 				setQuestions(questions);
+			}
+			else{
+				setQuestions(props.questions);
 			}
 		}
 		else{
@@ -38,8 +39,8 @@ export default function QuestionaireForm(props){
 		}
 	},[props.questions]);
 
-	if(!props.onSave){
-		throw Error("No onSave property given");
+	if(!props.onSave || !props.onClose){
+		throw Error("Should provide both an onSave and onClose functions");
 	}
 
 	function addQuestionnaire(event){
@@ -178,6 +179,12 @@ export default function QuestionaireForm(props){
 		}
 	}
 
+	function close(event){
+		event.preventDefault();
+
+		props.onClose();
+	}
+
 	function removeQuestion(event){
 		event.preventDefault();
 
@@ -194,14 +201,16 @@ export default function QuestionaireForm(props){
 		}
 	}
 
+	console.log('questions',questions);
+
 	return <div className='text-center'>
-		<div className='fixed w-full bg-indigo-900 p-2 top-0 z-50 shadow'>
+		<div className='sticky w-full bg-indigo-900 p-2 top-0 left-0 z-50 shadow'>
 			<div className='grid grid-cols-3 text-white'>
 				<button onClick={enregister} className=' text-white w-52 px-2'><Save color='white' /></button>
 				<h1 className='text-3xl font-bold'>Questionnaires</h1>
 				<div className='flex justify-end items-center pe-5'>
 					<button className='me-2' onClick={addQuestionnaire}><AddQuiz color='white' /></button>
-					<a href="#"><CloseRectangle color='rgb(255, 78, 78)' style={{color:'rgb(255, 78, 78)'}}  /></a>
+					<a onClick={close} href="#"><CloseRectangle color='rgb(255, 78, 78)' style={{color:'rgb(255, 78, 78)'}}  /></a>
 					{/*<a href="#" className='text-red-800'>Fermer</a>
 										<button className='absolute top-0 right-0 mr-10' onClick={addQuestionnaire}>Ajouter question</button>*/}
 				</div>
