@@ -17,3 +17,11 @@ export const renderQuiz = function(node,props={}){
 
 	return root;
 }
+
+export function updateForm(root,newProps={}){
+	root.render(<QuestionaireFormComponent {...newProps} />);
+}
+
+export function updateQuiz(root,newProps={}){
+	root.render(<QuizComponent {...newProps} />)
+}

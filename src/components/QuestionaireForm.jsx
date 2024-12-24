@@ -11,7 +11,8 @@ formRef = createRef();
 export default function QuestionaireForm(props){
 	let [questions, setQuestions] = useState([]),
 	[title,setTitle] = useState(props.title || ''),
-	[errors, setErrors] = useState({});
+	[errors, setErrors] = useState({}),
+	loading = props.loading;
 
 	useEffect(()=>{
 		if(props.questions){
@@ -102,6 +103,8 @@ export default function QuestionaireForm(props){
 						}
 
 						if(checks.length){
+							let wrote_assertions = 0;
+
 							for(let a=0,id=0;; a++){
 								let assertionNode;
 
@@ -109,6 +112,16 @@ export default function QuestionaireForm(props){
 								assertionNode = form.elements[assertionName];
 
 								if(assertionNode){
+									if(assertionNode.value.length){
+										wrote_assertions++;
+
+										remove_red_border(assertionNode);
+									}
+									else{
+										put_red_border(assertionNode);
+										errors[i] = "Veuillez completer l'assertion " + (a+1) + " de la question " + (id + 1);
+									}
+
 									assertions.push({
 										text: assertionNode.value,
 										checked: checks[a].checked,
@@ -152,9 +165,14 @@ export default function QuestionaireForm(props){
 					}
 				}
 
-				setErrors(errors);
+				if(!props.onError){
+					setErrors(errors);
+				}
 
 				if(Object.keys(errors).length){
+					if(props.onError){
+						props.onError(errors);
+					}
 					return;
 				}
 
@@ -170,6 +188,10 @@ export default function QuestionaireForm(props){
 			}
 			else{
 				put_red_border(qTitleNode);
+
+				props.onError({
+					'error':'Le titre est vide'
+				})
 
 				return console.error("No title provided");
 			}
@@ -204,7 +226,10 @@ export default function QuestionaireForm(props){
 	console.log('questions',questions);
 
 	return <div className='text-center'>
-		<div className='sticky w-full bg-indigo-900 p-2 top-0 left-0 z-50 shadow'>
+		{(loading)? <div className='absolute w-full h-full bg-slate-950 opacity-80  spinner flex place-content-center place-items-center bg-white border p-10 left-0 top-0 z-50'>
+			<span style={{borderRadius:'40%'}} className='animate-spin spinner shadow border bg-indigo-900 opacity-100 p-4 h-1/4 w-1/4'></span>
+		</div> : null}
+		<div className='sticky w-full bg-indigo-900 p-2 top-0 left-0 z-40 shadow'>
 			<div className='grid grid-cols-3 text-white'>
 				<button onClick={enregister} className=' text-white w-52 px-2'><Save color='white' /></button>
 				<h1 className='text-3xl font-bold'>Questionnaires</h1>

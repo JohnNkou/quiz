@@ -4,6 +4,7 @@ import { QName } from 'constant.js'
 import { getQuestionaires, saveQuestionaire } from 'utils.js'
 
 export default function AddQuestionnaire(){
+	let [loading, setLoading] = useState(false);
 
 	function save(questionnaire){
 		saveQuestionaire(questionnaire);
@@ -11,5 +12,9 @@ export default function AddQuestionnaire(){
 		location.hash = "";
 	}
 
-	return <QuestionaireForm onSave={save} />
+	function close(){
+		location.hash = "";
+	}
+
+	return <QuestionaireForm loading={loading} onSave={save} onClose={close} />
 }

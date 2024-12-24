@@ -14,12 +14,14 @@ export function build_question_assertion_check_name(question_number){
 
 export function put_red_border(node){
 	if(node.className.indexOf('border-red-500') == -1){
-		node.className += ' border-red-500';
+		node.className += ' border-red-500 border-danger border';
 	}
 }
 
 export function remove_red_border(node){
 	node.className = node.className.replaceAll('border-red-500','');
+	node.className = node.className.replaceAll('border-danger','');
+	node.className = node.className.replaceAll('border','');
 }
 
 export function getQuestionaire(){
