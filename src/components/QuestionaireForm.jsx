@@ -226,8 +226,8 @@ export default function QuestionaireForm(props){
 	console.log('questions',questions);
 
 	return <div className='text-center'>
-		{(loading)? <div className='absolute w-full h-full bg-slate-950 opacity-80  spinner flex place-content-center place-items-center bg-white border p-10 left-0 top-0 z-50'>
-			<span style={{borderRadius:'40%'}} className='animate-spin spinner shadow border bg-indigo-900 opacity-100 p-4 h-1/4 w-1/4'></span>
+		{(loading)? <div className='absolute w-full h-full bg-slate-950 opacity-90  spinner flex place-content-center place-items-center border p-10 left-0 top-0 z-50'>
+			<span style={{borderRadius:'70%'}} className='animate-spin spinner shadow border bg-indigo-900 opacity-100 px-4 py-4 h-1/4 w-1/4'></span>
 		</div> : null}
 		<div className='sticky w-full bg-indigo-900 p-2 top-0 left-0 z-40 shadow'>
 			<div className='grid grid-cols-3 text-white'>

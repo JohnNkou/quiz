@@ -4,7 +4,7 @@ import { QName } from 'constant.js'
 import { getQuestionaires, saveQuestionaire } from 'utils.js'
 
 export default function AddQuestionnaire(){
-	let [loading, setLoading] = useState(false);
+	let [loading, setLoading] = useState(true);
 
 	function save(questionnaire){
 		saveQuestionaire(questionnaire);

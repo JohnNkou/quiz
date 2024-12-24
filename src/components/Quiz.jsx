@@ -300,7 +300,7 @@ function InteractiveQuiz({ cursor, report, questions, onShowResult,  onAssertion
 				<button onClick={onShowResult} className='bg-indigo-900 text-white p-2 rounded'>Terminer</button>
 			</div> : null}
 
-		{(!report)? <div className='absolute bottom-2 w-full' onClick={navigate}>
+		{(!report)? <div className='absolute bottom-2 w-full text-white' onClick={navigate}>
 			<button style={{width:'100px'}} className={`${(cursor > 0)? 'bg-primary shadow border p-2 me-2 rounded': 'invisible'}`} data-cursor={cursor -1 }>Precedent</button><button style={{width:'100px'}} className={`${((cursor + 1) < questions.length )? 'bg-primary border shadow p-2 rounded' : 'invisible'}`} data-cursor={cursor + 1}>Suivant</button>
 		</div> : null}
 	</div>

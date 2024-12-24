@@ -26,7 +26,9 @@ export default function QuestionaireEdit(){
 		}
 	}
 
-	console.log("Kink",questionaire);
+	function close(){
+		location.hash = "";
+	}
 
-	return <QuestionaireForm {...questionaire} onSave={update} />
+	return <QuestionaireForm {...questionaire} onClose={close} onSave={update} />
 }
